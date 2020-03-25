@@ -19,13 +19,20 @@
     currentTaskId = task._id
     editedTask = task
   }
+  async function remove (task) {
+    if (!confirm('Are you sure? This cannot be undone.')) return
+    await app.service('tasks').remove(task._id)
+  }
 </script>
 <Navbar />
 <h2>Tasks</h2>
 {#if $tasks}
 <ul>
   {#if $tasks.data.length > 0} {#each $tasks.data as task}
-  <li>{task.title} <a href="#" on:click="{() => edit(task)}">edit</a></li>
+  <li>
+    {task.title} <button on:click="{() => edit(task)}">edit</button>
+    <button on:click="{() => remove(task)}">delete</button>
+  </li>
   {/each} {:else} No tasks. {/if}
 </ul>
 

@@ -1,8 +1,9 @@
-import app from '../../src/app';
+import app from '../../src/app'
 
-describe('\'students\' service', () => {
-  it('registered the service', () => {
-    const service = app.service('students');
-    expect(service).toBeTruthy();
-  });
-});
+describe("'students' service", () => {
+  it('adds tasks', async () => {
+    const s = await app.service('students').create({})
+    console.log(s.tasks)
+    expect(s.tasks).toBeTruthy()
+  })
+})

@@ -1,4 +1,15 @@
-
+import { HookContext } from '@feathersjs/feathers'
+const removeFromClassrooms = async (hook: HookContext) => {
+  const classrooms = await hook.app
+    .service('classrooms')
+    .find({ query: { taskIds: hook.result._id }, paginate: false })
+  console.log('classrooms', classrooms)
+  classrooms.forEach((classroom: any) => {
+    hook.app.service('classrooms').patch(classroom._id, {
+      taskIds: classroom.taskIds.filter((id: string) => id != hook.result._id)
+    })
+  })
+}
 export default {
   before: {
     all: [],
@@ -17,7 +28,7 @@ export default {
     create: [],
     update: [],
     patch: [],
-    remove: []
+    remove: [removeFromClassrooms]
   },
 
   error: {
@@ -29,4 +40,4 @@ export default {
     patch: [],
     remove: []
   }
-};
+}

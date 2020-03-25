@@ -1,18 +1,65 @@
 <script>
   import Navbar from './Navbar.html'
   import app from './app'
+  const classroom = app
+    .service('classrooms')
+    .watch()
+    .get('main')
+  classroom.set = async function (value) {
+    await app.service('classrooms').update('main', value)
+  }
   $: students = app
     .service('students')
     .watch()
     .find()
+  $: tasks = app
+    .service('tasks')
+    .watch()
+    .find()
+
+  function assign (task, yes) {
+    if (yes) {
+      $classroom.taskIds.push(task._id)
+      $classroom = $classroom
+    } else {
+      $classroom.taskIds = $classroom.taskIds.filter(id => id != task._id)
+      $classroom = $classroom
+    }
+  }
+
+  async function removeStudent (student) {
+    if (!confirm('Are you sure? This cannot be undone.')) return
+    await app.service('students').remove(student._id)
+  }
 </script>
 <Navbar />
+<h2>Assigned tasks</h2>
+{#if $tasks && $classroom}
+<ul style="list-style-type: none;">
+  {#each $tasks.data as task}
+  <li>
+    <label>
+      <input
+        type="checkbox"
+        checked="{$classroom.taskIds.includes(task._id)}"
+        on:change="{(e) => assign(task, e.target.checked)}"
+      />{task.title} {#if
+      $classroom.taskIds.includes(task._id)}(#{$classroom.taskIds.indexOf(task._id)
+      + 1}){/if}</label
+    >
+  </li>
+  {/each}
+</ul>
+{:else} ... {/if}
 
 <h2>Students</h2>
 {#if $students}
 <ul>
   {#each $students.data as student}
-  <li>{JSON.stringify(student)}</li>
+  <li>
+    Student #{student.serialNumber}
+    <button on:click="{() => removeStudent(student)}">Delete all data</button>
+  </li>
   {/each}
 </ul>
 {:else} ... {/if}

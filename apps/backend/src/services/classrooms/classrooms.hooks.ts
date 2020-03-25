@@ -1,3 +1,9 @@
+import { HookContext } from '@feathersjs/feathers'
+import { fastJoin } from 'feathers-hooks-common'
+
+const addTaskIds = (hook: HookContext) => {
+  if (!hook.result.taskIds) hook.result.taskIds = []
+}
 
 export default {
   before: {
@@ -11,7 +17,19 @@ export default {
   },
 
   after: {
-    all: [],
+    all: [
+      addTaskIds,
+      fastJoin({
+        joins: {
+          tasks: () => async (classroom, context) => {
+            const taskIds = classroom.taskIds || []
+            classroom.tasks = await context.app
+              .service('tasks')
+              .find({ query: { id: { $in: taskIds } }, paginate: false })
+          }
+        }
+      })
+    ],
     find: [],
     get: [],
     create: [],
@@ -29,4 +47,4 @@ export default {
     patch: [],
     remove: []
   }
-};
+}
