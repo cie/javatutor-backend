@@ -1,0 +1,35 @@
+<script>
+  import Navbar from './Navbar.html'
+  import app from './app'
+  import TaskForm from './TaskForm.html'
+  $: tasks = app
+    .service('tasks')
+    .watch()
+    .find()
+  let editedTask
+  let currentTaskId = undefined
+  function save () {
+    if (currentTaskId) {
+      app.service('tasks').update(currentTaskId, editedTask)
+    } else {
+      app.service('tasks').create(editedTask)
+    }
+  }
+  function edit (task) {
+    currentTaskId = task._id
+    editedTask = task
+  }
+</script>
+<Navbar />
+<h2>Tasks</h2>
+{#if $tasks}
+<ul>
+  {#if $tasks.data.length > 0} {#each $tasks.data as task}
+  <li>{task.title} <a href="#" on:click="{() => edit(task)}">edit</a></li>
+  {/each} {:else} No tasks. {/if}
+</ul>
+
+<h2>Create task</h2>
+<TaskForm bind:task="{editedTask}" on:save="{save}" />
+
+{:else} ... {/if}

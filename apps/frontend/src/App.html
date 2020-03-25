@@ -1,0 +1,15 @@
+<script>
+  import { Router, Link as RouteLink, Route } from 'svelte-routing'
+  import Welcome from './Welcome.html'
+  import Admin from './Admin.html'
+  import Tasks from './Tasks.html'
+  import Classroom from './Classroom.html'
+</script>
+
+<Router>
+  <Route path="/" component="{Welcome}" />
+  <Route path="admin/tasks" component="{Tasks}">ha</Route>
+  <Route path="admin/classroom" component="{Classroom}">ha</Route>
+</Router>
+
+<style></style>

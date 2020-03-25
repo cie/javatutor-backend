@@ -1,0 +1,29 @@
+<script>
+  import { createEventDispatcher } from 'svelte'
+
+  export let task = {
+    title: '',
+    className: '',
+    packageName: 'javatutor.tasks',
+    instructions: ''
+  }
+  const dispatch = createEventDispatcher()
+
+  function save () {
+    dispatch('save')
+  }
+</script>
+<form>
+  <h3>Title</h3>
+  <input bind:value="{task.title}" />
+  <h3>Java package name</h3>
+  <input bind:value="{task.packageName}" />
+  <h3>Java class name</h3>
+  <input bind:value="{task.className}" />
+  <h3>Instructions</h3>
+  <textarea bind:value="{task.instructions}" cols="50" rows="10" />
+  <h3>Initial code</h3>
+  <textarea bind:value="{task.initialCode}" cols="50" rows="10" />
+
+  <button on:click|preventDefault="{save}">Save</button>
+</form>

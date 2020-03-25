@@ -1,0 +1,20 @@
+{
+  "name": "@myapp/root",
+  "private": true,
+  "version": "1.0.0",
+  "description": "A demo of monorepo management with npm only, feathers and svelte",
+  "repository": "-",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently 'npm:dev-frontend' 'npm:dev-backend' -c cyan,yellow",
+    "dev-frontend": "cd apps/frontend && npm run dev",
+    "dev-backend": "cd apps/backend && npm run dev"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^5.1.0",
+    "lerna": "^3.20.2",
+    "npm-ws": "^0.9.1"
+  }
+}

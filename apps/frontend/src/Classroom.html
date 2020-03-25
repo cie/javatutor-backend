@@ -1,0 +1,18 @@
+<script>
+  import Navbar from './Navbar.html'
+  import app from './app'
+  $: students = app
+    .service('students')
+    .watch()
+    .find()
+</script>
+<Navbar />
+
+<h2>Students</h2>
+{#if $students}
+<ul>
+  {#each $students.data as student}
+  <li>{JSON.stringify(student)}</li>
+  {/each}
+</ul>
+{:else} ... {/if}
