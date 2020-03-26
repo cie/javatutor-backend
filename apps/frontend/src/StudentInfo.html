@@ -28,9 +28,15 @@
 </script>
 <div class="studentInfo">
   <h1>
-    Student #{student.serialNumber}<button on:click="{deleteAllData}">
-      Delete all data
-    </button>
+    Student #{student.serialNumber}<span class="actionButtons">
+      <small
+        >{#if $events} {taskIds.length} task{taskIds.length != 1 ? 's' : ''}
+        {/if}</small
+      >
+      <button on:click="{deleteAllData}">
+        Delete all data
+      </button></span
+    >
   </h1>
 
   <section>
@@ -51,21 +57,22 @@
 
 <style>
   .studentInfo {
-    width: 800px;
-    min-width: 600px;
+    width: 920px;
     margin-right: 30px;
     flex-shrink: 0.2;
+  }
+  .actionButtons {
+    display: block;
+    font-size: 1rem;
+    position: absolute;
+    right: 0;
+    top: 0;
   }
   h1 {
     font-weight: normal;
     font-size: 140%;
     position: relative;
     border-bottom: 1px rgba(0, 0, 0, 0.3) solid;
-  }
-  h1 button {
-    font-size: 1rem;
-    position: absolute;
-    right: 0;
   }
   .tab {
     background: none;
