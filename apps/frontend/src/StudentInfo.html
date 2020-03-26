@@ -43,14 +43,18 @@
     {#if $events} {#if someEvents}
     <nav>
       {#each taskIds as taskId}
-      <button class="tab" class:active="{currentTaskId === taskId}">
+      <button
+        class="tab"
+        class:active="{currentTaskId === taskId}"
+        on:click="{() => {currentTaskId = taskId}}"
+      >
         {tasks.find(t => t._id === taskId).title}
       </button>
       {/each}
     </nav>
     <AttemptPlayer
       {student}
-      events="{$events.data.map(e => ({...e, sec: +new Date(e.createdAt) / 1000}))}"
+      events="{$events.data.filter(e => e.taskId ===currentTaskId).map(e => ({...e, sec: +new Date(e.createdAt) / 1000}))}"
     />
     {:else}
     <p>No code received</p>

@@ -74,7 +74,7 @@
     padding: 0;
   }
   .eventMarkers {
-    z-index: 1000;
+    z-index: 0;
     position: absolute;
     bottom: 21px;
     left: 0;
@@ -82,16 +82,17 @@
   }
   .eventMarker {
     position: absolute;
-    width: 15px;
-    height: 15px;
+    width: 12px;
+    height: 12px;
     left: 40px;
     top: 0;
-    transform: translate(-50%, -50%);
+    transform: translate(6px, -50%);
     border-radius: 100px;
     background: yellow;
     border: 1px solid rgba(0, 0, 0, 0.5);
     box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
     pointer-events: none;
-    opacity: 0.8;
+    opacity: 0.4;
+    box-sizing: content-box;
   }
 </style>
