@@ -23,9 +23,13 @@ export default {
         joins: {
           tasks: () => async (classroom, context) => {
             const taskIds = classroom.taskIds || []
-            classroom.tasks = await context.app
-              .service('tasks')
-              .find({ query: { id: { $in: taskIds } }, paginate: false })
+            const tasks = await context.app.service('tasks').find({
+              query: { _id: { $in: taskIds } },
+              paginate: false
+            })
+            classroom.tasks = taskIds.map((id: string) =>
+              tasks.find((t: any) => t._id == id)
+            )
           }
         }
       })

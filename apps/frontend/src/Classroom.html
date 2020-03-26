@@ -1,5 +1,6 @@
 <script>
   import Navbar from './Navbar.html'
+  import StudentInfo from './StudentInfo.html'
   import app from './app'
   const classroom = app
     .service('classrooms')
@@ -11,7 +12,7 @@
   $: students = app
     .service('students')
     .watch()
-    .find()
+    .find({ query: { $sort: { serialNumber: 1 } } })
   $: tasks = app
     .service('tasks')
     .watch()
@@ -33,7 +34,11 @@
   }
 </script>
 <Navbar />
-<h2>Assigned tasks</h2>
+<h2>
+  Assigned tasks {#if $tasks && $classroom && $classroom.taskIds.length === 0}
+  <small class="error">⚠️ No tasks assigned</small>
+  {/if}
+</h2>
 {#if $tasks && $classroom}
 <ul style="list-style-type: none;">
   {#each $tasks.data as task}
@@ -59,7 +64,14 @@
   <li>
     Student #{student.serialNumber}
     <button on:click="{() => removeStudent(student)}">Delete all data</button>
+    <StudentInfo {student} />
   </li>
   {/each}
 </ul>
 {:else} ... {/if}
+
+<style>
+  .error {
+    color: darkred;
+  }
+</style>
