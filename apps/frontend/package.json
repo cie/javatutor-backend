@@ -25,6 +25,7 @@
     "dev": "webpack-dev-server --content-base public --port 4040"
   },
   "dependencies": {
+    "highlight.js": "^9.18.1",
     "svelte-routing": "^1.4.2"
   }
 }

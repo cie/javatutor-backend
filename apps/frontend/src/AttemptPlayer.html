@@ -1,0 +1,42 @@
+<script>
+  import CodeWindow from './CodeWindow.html'
+  export let student
+  export let events
+  $: someEvents = $events && $events.data.length > 0
+  $: eventCount = $events && $events.data.length
+  let currentEvent = -1
+  $: event =
+    someEvents &&
+    $events.data[~currentEvent ? currentEvent : $events.data.length - 1]
+</script>
+<div class="panel">
+  <CodeWindow code="{event.source}" />
+  {#if event.hintSource}
+  <div class="hint">{event.hintSource.replace(/^!/, '')}</div>
+  {/if} {#if someEvents}
+  <ion-range
+    min="0"
+    max="{eventCount - 1}"
+    step="1"
+    pin="true"
+    value="{~currentEvent ? currentEvent : $events.data.length - 1}"
+    on:ionChange="{(e) => currentEvent = e.detail.value === $events.data.length - 1 ? -1 : e.detail.value}"
+  ></ion-range>
+  {/if}
+</div>
+<style>
+  .panel {
+    position: relative;
+    font-size: 88%;
+  }
+  .hint {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background-color: rgba(255, 245, 0, 0.1);
+    border: 1px solid rgb(40, 40, 40);
+    border-radius: 10px;
+    max-width: 250px;
+    padding: 6px 8px;
+  }
+</style>

@@ -27,11 +27,6 @@
       $classroom = $classroom
     }
   }
-
-  async function removeStudent (student) {
-    if (!confirm('Are you sure? This cannot be undone.')) return
-    await app.service('students').remove(student._id)
-  }
 </script>
 <Navbar />
 <h2>
@@ -59,19 +54,19 @@
 
 <h2>Students</h2>
 {#if $students}
-<ul>
+<div class="students">
   {#each $students.data as student}
-  <li>
-    Student #{student.serialNumber}
-    <button on:click="{() => removeStudent(student)}">Delete all data</button>
-    <StudentInfo {student} />
-  </li>
+  <StudentInfo {student} tasks="{$tasks && $tasks.data}" />
   {/each}
-</ul>
+</div>
 {:else} ... {/if}
 
 <style>
   .error {
     color: darkred;
+  }
+  .students {
+    display: flex;
+    flex-wrap: wrap;
   }
 </style>

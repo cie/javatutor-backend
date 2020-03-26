@@ -82,6 +82,7 @@ importers:
       winston: ^3.2.1
   apps/frontend:
     dependencies:
+      highlight.js: 9.18.1
       svelte-routing: 1.4.2_svelte@3.20.1
     devDependencies:
       '@feathersjs/feathers': 4.5.2
@@ -107,6 +108,7 @@ importers:
       css-loader: ^2.1.1
       feathers-reactive: ^0.8.1
       hello: ^0.0.2
+      highlight.js: ^9.18.1
       mini-css-extract-plugin: ^0.6.0
       rxjs: ^6.5.4
       serve: ^11.0.0
@@ -5279,6 +5281,10 @@ packages:
       node: '>=4.0.0'
     resolution:
       integrity: sha512-Io1zA2yOA1YJslkr+AJlWSf2yWFkKjvkcL9Ni1XSUqnGLr/qRQe2UI3Cn/J9MsJht7yEVCe0SscY1HgVMujbgg==
+  /highlight.js/9.18.1:
+    dev: false
+    resolution:
+      integrity: sha512-OrVKYz70LHsnCgmbXctv/bfuvntIKDz177h0Co37DQ5jamGZLVmoCVMtjMtNZY3X9DrCcKfklHPNeA0uPZhSJg==
   /hmac-drbg/1.0.1:
     dependencies:
       hash.js: 1.1.7
