@@ -48,7 +48,10 @@
       </button>
       {/each}
     </nav>
-    <AttemptPlayer {student} {events} />
+    <AttemptPlayer
+      {student}
+      events="{$events.data.map(e => ({...e, sec: +new Date(e.createdAt) / 1000}))}"
+    />
     {:else}
     <p>No code received</p>
     {/if} {:else} ... {/if}

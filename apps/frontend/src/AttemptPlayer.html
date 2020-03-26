@@ -1,26 +1,34 @@
 <script>
   import CodeWindow from './CodeWindow.html'
-  export let student
   export let events
-  $: someEvents = $events && $events.data.length > 0
-  $: eventCount = $events && $events.data.length
-  let currentEvent = -1
-  $: event =
-    someEvents &&
-    $events.data[~currentEvent ? currentEvent : $events.data.length - 1]
+  $: someEvents = events.length > 0
+  $: maxSec = someEvents && events[events.length - 1].sec - events[0].sec
+  let currentSec = -1
+  let currentEvent
+  $: {
+    if (currentSec == -1) {
+      currentEvent = events[events.length - 1]
+    } else {
+      for (const e of events) {
+        if (e.sec > currentSec + events[0].sec) break
+        currentEvent = e
+      }
+    }
+  }
+  $: sec = currentSec !== -1 ? currentSec : maxSec
 </script>
 <div class="panel">
-  <CodeWindow code="{event.source}" />
-  {#if event.hintSource}
-  <div class="hint">{event.hintSource.replace(/^!/, '')}</div>
+  <CodeWindow code="{currentEvent.source}" />
+  {#if currentEvent.hintSource}
+  <div class="hint">{currentEvent.hintSource.replace(/^!/, '')}</div>
   {/if} {#if someEvents}
   <ion-range
     min="0"
-    max="{eventCount - 1}"
+    max="{maxSec}"
     step="1"
     pin="true"
-    value="{~currentEvent ? currentEvent : $events.data.length - 1}"
-    on:ionChange="{(e) => currentEvent = e.detail.value === $events.data.length - 1 ? -1 : e.detail.value}"
+    value="{sec}"
+    on:ionChange="{(e) => currentSec = e.detail.value === maxSec ? -1 : e.detail.value}"
   ></ion-range>
   {/if}
 </div>
@@ -37,5 +45,8 @@
     border-radius: 10px;
     max-width: 250px;
     padding: 6px 8px;
+  }
+  ion-range {
+    padding: 0;
   }
 </style>
