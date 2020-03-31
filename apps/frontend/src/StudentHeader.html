@@ -1,0 +1,70 @@
+<script>
+  import { createEventDispatcher } from 'svelte'
+  import AttemptPlayer from './AttemptPlayer.html'
+  export let student
+  export let active
+  const dispatch = createEventDispatcher()
+  async function deleteAllData () {
+    if (!confirm('Are you sure? This cannot be undone.')) return
+    await app.service('students').remove(student._id)
+  }
+  $: events = app
+    .service('events')
+    .watch()
+    .find({
+      query: { studentId: student._id, $sort: { createdAt: 1 }, $limit: 10000 }
+    })
+  let taskIds
+  let currentTaskId
+  $: {
+    const tasksSet = {}
+    if ($events) {
+      $events.data.forEach(e => {
+        tasksSet[e.taskId] = true
+      })
+    }
+    taskIds = Object.keys(tasksSet)
+    currentTaskId = currentTaskId || taskIds[0]
+  }
+  $: someEvents = $events && $events.data.length > 0
+</script>
+<main class:active="{active}" on:click="{() => dispatch('select')}">
+  <h1>
+    Student #{student.serialNumber}
+  </h1>
+
+  <span class="actionButtons">
+    <small
+      >{#if $events} {taskIds.length} task{taskIds.length != 1 ? 's' : ''}
+      started {/if}</small
+    >
+    <button on:click="{deleteAllData}">
+      Delete all data
+    </button>
+  </span>
+</main>
+
+<style>
+  main {
+    width: 100%;
+    position: relative;
+    cursor: pointer;
+    padding: 8px 10px;
+  }
+  main:hover {
+    background: #eeeeee;
+  }
+  h1 {
+    display: inline;
+  }
+  main.active {
+    background: #d3d3d3;
+  }
+  .actionButtons {
+    display: block;
+    font-size: 1rem;
+    position: absolute;
+    right: 10px;
+    top: 8px;
+  }
+</style>

@@ -6,13 +6,17 @@
   let currentSec = -1
   let currentEvent
   $: {
+    console.log('computing currentEvent')
     if (currentSec == -1) {
+      console.log('-1')
       currentEvent = events[events.length - 1]
     } else {
+      currentEvent = events[0]
       for (const e of events) {
         if (e.sec > currentSec + events[0].sec) break
         currentEvent = e
       }
+      console.log('currentEvent', currentEvent)
     }
   }
   $: sec = currentSec !== -1 ? currentSec : maxSec
@@ -34,6 +38,7 @@
   }
 </script>
 <div class="panel">
+  {#if events.length}
   <CodeWindow code="{currentEvent.source}" />
   {#if currentEvent.hintSource}
   <div class="hint">{currentEvent.hintSource.replace(/^!/, '')}</div>
@@ -54,7 +59,7 @@
     ></span>
     {/each}
   </div>
-  {/if}
+  {/if} {/if}
 </div>
 <style>
   .panel {

@@ -1,6 +1,6 @@
 <script>
   import Navbar from './Navbar.html'
-  import StudentInfo from './StudentInfo.html'
+  import Students from './Students.html'
   import app from './app'
   const classroom = app
     .service('classrooms')
@@ -53,20 +53,12 @@
 {:else} ... {/if}
 
 <h2>Students</h2>
-{#if $students}
-<div class="students">
-  {#each $students.data as student}
-  <StudentInfo {student} tasks="{$tasks && $tasks.data}" />
-  {/each}
-</div>
+{#if $students && $tasks}
+<Students students="{$students.data}" tasks="{$tasks.data}" />
 {:else} ... {/if}
 
 <style>
   .error {
     color: darkred;
-  }
-  .students {
-    display: flex;
-    flex-wrap: wrap;
   }
 </style>

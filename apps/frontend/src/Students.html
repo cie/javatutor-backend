@@ -1,0 +1,33 @@
+<script>
+  export let students
+  export let tasks
+  import StudentContent from './StudentContent.html'
+  import StudentHeader from './StudentHeader.html'
+  let currentStudent
+</script>
+
+<article>
+  <aside>
+    {#each students as student}
+    <StudentHeader
+      {student}
+      active="{student === currentStudent}"
+      on:select="{() => currentStudent = student}"
+    />
+    {/each}
+  </aside>
+  <main>
+    {#if currentStudent}
+    <StudentContent student="{currentStudent}" {tasks} />
+    {/if}
+  </main>
+</article>
+
+<style>
+  article {
+    display: flex;
+  }
+  aside {
+    width: 440px;
+  }
+</style>
